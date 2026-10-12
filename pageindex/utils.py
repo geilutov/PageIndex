@@ -1,4 +1,4 @@
-import contextvars
+icomplemport contextvars
 import logging
 import os
 import sys
@@ -179,7 +179,7 @@ def llm_completion(model, prompt, chat_history=None, return_finish_reason=False)
                 "drop_params": True,
                 # the loop is the retry policy; the merge lets a backend override win
                 "max_retries": 0,
-                **(backend or {}),
+                **(backend or {"timeout": 3600, "max_tokens": 800000}),
             })
             content = response.choices[0].message.content
             if return_finish_reason:
@@ -215,7 +215,7 @@ async def llm_acompletion(model, prompt):
                 "messages": messages,
                 "drop_params": True,
                 "max_retries": 0,
-                **(backend or {}),
+                **(backend or {"timeout": 3600, "max_tokens": 800000}),
             })
             return response.choices[0].message.content
         except Exception as e:
